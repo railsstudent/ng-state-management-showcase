@@ -144,7 +144,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ng-ngrx-signal-store-demo/"
+              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ng-ngrx-signalStore-demo/"
             },
             "development": {
               "optimization": false,
