@@ -2,6 +2,18 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.4.
 
+## Github Pages:
+- NgRx Signal Store Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-ngrx-signalStore-demo/
+- TanStack Store Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-tanstack-store-demo/
+
+# Run Deployment Script
+- Checktout gh-pages branch
+
+```bash
+./deploy-github-page.sh ng-ngrx-signalStore-demo
+./deploy-github-page.sh ng-tanstack-store-demo
+```
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
