@@ -1,1 +1,26 @@
 /* You can add global styles to this file, and also import other style files */
+*, ::before, ::after {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    min-height: 100%;
+}
+
+button {
+    padding: 0.5rem 1.25rem;
+}
+
+input {
+    padding: 0.25rem;
+    border-radius: 5px;
+}
+
+.form-errors {
+    padding: 0.5rem;
+    border-radius: 8px;
+    color: red;
+    background: pink;
+}
