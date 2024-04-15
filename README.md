@@ -14,6 +14,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ./deploy-github-page.sh ng-ngrx-signalStore-demo
 ./deploy-github-page.sh ng-tanstack-store-demo
 ./deploy-github-page.sh ng-signal-demo
+or 
+./deploy-github-page.sh all to build all projects
 ```
 
 ## Development server
