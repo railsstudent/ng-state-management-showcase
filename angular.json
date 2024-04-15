@@ -7,7 +7,10 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "changeDetection": "OnPush",
+          "inlineStyle": true,
+          "inlineTemplate": true
         }
       },
       "root": "projects/ng-tanstack-store-demo",
@@ -187,6 +190,101 @@
             ],
             "styles": [
               "projects/ng-ngrx-signal-store-demo/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    },
+    "ng-signal-demo": {
+      "projectType": "application",
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
+      "root": "projects/ng-signal-demo",
+      "sourceRoot": "projects/ng-signal-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:application",
+          "options": {
+            "outputPath": "dist/ng-signal-demo",
+            "index": "projects/ng-signal-demo/src/index.html",
+            "browser": "projects/ng-signal-demo/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/ng-signal-demo/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/ng-signal-demo/src/favicon.ico",
+              "projects/ng-signal-demo/src/assets"
+            ],
+            "styles": [
+              "projects/ng-signal-demo/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all",
+              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ng-signal-demo/"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "ng-signal-demo:build:production"
+            },
+            "development": {
+              "buildTarget": "ng-signal-demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "buildTarget": "ng-signal-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/ng-signal-demo/tsconfig.spec.json",
+            "inlineStyleLanguage": "scss",
+            "assets": [
+              "projects/ng-signal-demo/src/favicon.ico",
+              "projects/ng-signal-demo/src/assets"
+            ],
+            "styles": [
+              "projects/ng-signal-demo/src/styles.scss"
             ],
             "scripts": []
           }

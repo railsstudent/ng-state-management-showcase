@@ -5,6 +5,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Github Pages:
 - NgRx Signal Store Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-ngrx-signalStore-demo/
 - TanStack Store Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-tanstack-store-demo/
+- Signal Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-signal-demo/
 
 # Run Deployment Script
 - Checktout gh-pages branch
@@ -12,6 +13,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ```bash
 ./deploy-github-page.sh ng-ngrx-signalStore-demo
 ./deploy-github-page.sh ng-tanstack-store-demo
+./deploy-github-page.sh ng-signal-demo
 ```
 
 ## Development server
