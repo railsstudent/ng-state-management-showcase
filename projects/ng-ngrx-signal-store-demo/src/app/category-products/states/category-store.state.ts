@@ -5,4 +5,5 @@ export interface CategoryStoreState {
   categories: string[],
   products: Product[],
   categoryProducts: CategoryProducts[],
+  featuredProducts: Product[],
 }
