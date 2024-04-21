@@ -1,17 +1,15 @@
 import { HttpClient, provideHttpClient } from "@angular/common/http";
-import { provideRouter, TitleStrategy, withComponentInputBinding } from "@angular/router";
-import { routes } from "./app.routes";
-import { ShopPageTitleStrategy } from "./shop-page-title.strategy";
-import { catchError, combineLatestWith, EMPTY, of, retry, tap } from "rxjs";
-import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-import { CategoryProducts } from "./categories/interfaces/category-products.interface";
-import { Product } from "./products/interfaces/product.interface";
 import { APP_INITIALIZER, DestroyRef } from "@angular/core";
+import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { provideRouter, TitleStrategy, withComponentInputBinding } from "@angular/router";
+import { catchError, combineLatestWith, EMPTY, retry, tap } from "rxjs";
+import { routes } from "./app.routes";
 import { CategoryFacade } from "./category-products/facades/category.facade";
+import { ProductService } from './products/services/product.service';
+import { ShopPageTitleStrategy } from "./shop-page-title.strategy";
 
 function loadCategoryProducts(httpClient: HttpClient, destroyRef$: DestroyRef, 
-catFacade: CategoryFacade) {
-  const PRODUCTS_URL = 'https://fakestoreapi.com/products';
+catFacade: CategoryFacade, productService: ProductService) {
   const CATEGORIES_URL = 'https://fakestoreapi.com/products/categories';
 
   return () => {
@@ -19,33 +17,23 @@ catFacade: CategoryFacade) {
     categories$.pipe(
       retry(3),
       combineLatestWith(
-        httpClient.get<Product[]>(PRODUCTS_URL)
-          .pipe(
-            retry(3),
-            catchError((e) => {
-              console.error(e);
-              return of([]);
-            })
-          )
+        productService.products$,
+        productService.featuredProductIds$,
       ),
-      tap(([categories, products]) => {
-        catFacade.updateCategoriesAndProducts(categories, products);
-
-        const categoryResults = categories.reduce((acc, category) => {
-          const matched = products.filter((p) => p.category === category);
-
-          return acc.concat({
-            category,
-            products: matched,
-          });
-        }, [] as CategoryProducts[]);
-        
-        catFacade.updateCategoryProducts(categoryResults);
+      tap(([categories, products, featuredProductIds]) => {
+        catFacade.updateCategoryInfo({
+          categories,
+          products,
+          featuredProductIds
+        });
       }),
       takeUntilDestroyed(destroyRef$),
       catchError((e) => {
-        catFacade.updateCategoriesAndProducts([], []);
-        catFacade.updateCategoryProducts([]);
+        catFacade.updateCategoryInfo({
+          categories: [],
+          products: [],
+          featuredProductIds: [],
+        });
 
         console.error(e);
         return EMPTY;
@@ -65,9 +53,9 @@ export const appConfig = {
     {
       provide: APP_INITIALIZER,
       multi: true,
-      deps: [HttpClient, DestroyRef, CategoryFacade],
-      useFactory: (httpClient: HttpClient, destroyRef: DestroyRef, catFarcade: CategoryFacade) => 
-        loadCategoryProducts(httpClient, destroyRef, catFarcade),
+      deps: [HttpClient, DestroyRef, CategoryFacade, ProductService],
+      useFactory: (httpClient: HttpClient, destroyRef: DestroyRef, catFarcade: CategoryFacade, productService: ProductService) => 
+        loadCategoryProducts(httpClient, destroyRef, catFarcade, productService),
 
     }
   ]

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { categoryStore, updateCategories, updateCategoryProducts, updateProducts } from '../../category-products/stores/category.store';
 import { injectStore } from '@tanstack/angular-store';
-import { Product } from '../../products/interfaces/product.interface';
 import { CategoryProducts } from '../../categories/interfaces/category-products.interface';
+import { categoryStore, updateCategories, updateCategoryProducts, updateFeaturedProducts, updateProducts } from '../../category-products/stores/category.store';
+import { Product } from '../../products/interfaces/product.interface';
+import { CategoryInit } from '../interfaces/category-init.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,30 @@ import { CategoryProducts } from '../../categories/interfaces/category-products.
 export class CategoryFacade {
   categoryProducts = injectStore(categoryStore, (state) => state.categoryProducts);
   products = injectStore(categoryStore, (state) => state.products);
+  featuredProducts = injectStore(categoryStore, (state) => state.featuredProducts);
 
-  updateCategoriesAndProducts(categories: string[], products: Product[]) {
+  updateCategoryInfo({ categories, products, featuredProductIds }: CategoryInit) {
+
+    const featuredProducts: Product[] = [];
+    for (const id of featuredProductIds) {
+      const p = products.find((p) => p.id === id);
+      if (p) {
+        featuredProducts.push(p);
+      }
+    }
+
+    const categoryProducts = categories.reduce((acc, category) => {
+      const matched = products.filter((p) => p.category === category);
+
+      return acc.concat({
+        category,
+        products: matched,
+      });
+    }, [] as CategoryProducts[]);
+
     updateCategories(categories);
     updateProducts(products);
-  }
-
-  updateCategoryProducts(categoryProducts: CategoryProducts[]) {
     updateCategoryProducts(categoryProducts);
+    updateFeaturedProducts(featuredProducts);
   }
 }
