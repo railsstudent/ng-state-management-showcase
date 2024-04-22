@@ -21,6 +21,15 @@ export class ProductService {
         return of([]);
       })
     );
+
+  products$ = this.httpClient.get<Product[]>(PRODUCTS_URL)
+    .pipe(
+      retry(3),
+      catchError((e) => {
+        console.error(e);
+        return of([] as Product[]);
+      })
+    );
   
   getProduct(id: number | undefined): Promise<Product | null> {
     if (!id) {

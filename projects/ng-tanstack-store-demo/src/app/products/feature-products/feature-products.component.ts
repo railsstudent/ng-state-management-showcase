@@ -42,27 +42,7 @@ import { CategoryFacade } from '../../category-products/facades/category.facade'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatureProductsComponent {
-  private readonly productService = inject(ProductService);
   private readonly categoryFacade = inject(CategoryFacade);
 
-  featuredProducts = toSignal(
-    this.productService.featuredProductIds$.pipe(
-      switchMap((ids) => this.getFeaturedProducts(ids))
-  ), { initialValue: [] as Product[] });
-
-  async getFeaturedProducts(ids: number[]) {
-    try {      
-      const featuredProducts: Product[] = [];
-      for (const id of ids) {
-        const p = this.categoryFacade.products().find((p) => p.id === id);
-        if (p) {
-          featuredProducts.push(p);
-        }
-      }
-
-      return featuredProducts;
-    } catch {
-      return [] as Product[];
-    }
-  }
+  featuredProducts = this.categoryFacade.featuredProducts;
 }

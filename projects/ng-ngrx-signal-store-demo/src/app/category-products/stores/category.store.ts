@@ -7,6 +7,7 @@ const intialState: CategoryStoreState = {
   categories: [],
   products: [],
   categoryProducts: [],
+  featuredProducts: [],
 }
 
 export const CategoryStore = signalStore(
@@ -14,22 +15,16 @@ export const CategoryStore = signalStore(
   withState(intialState),
   withMethods((store) => ({
     updateCategories(categories: string[]) {
-      patchState(store, (state) => ({
-        ...state,
-        categories,
-      }));
+      patchState(store, { categories });
     },
     updateProducts(products: Product[]) {
-      patchState(store, (state) => ({
-        ...state,
-        products,
-      }));
+      patchState(store, { products });
     },
     updateCategoryProducts(categoryProducts: CategoryProducts[]) {
-      patchState(store, (state) => ({
-        ...state,
-        categoryProducts,
-      }));
+      patchState(store, { categoryProducts })
+    },
+    updateFeaturedProducts(featuredProducts: Product[]) {
+      patchState(store, { featuredProducts });
     },
   }))
 );

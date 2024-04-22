@@ -7,6 +7,7 @@ export const categoryStore = new Store<CategoryStoreState>({
   categories: [],
   products: [],
   categoryProducts: [],
+  featuredProducts: [],
 });
 
 export function updateCategories(categories: string[]) {
@@ -28,5 +29,12 @@ export function updateCategoryProducts(categoryProducts: CategoryProducts[]) {
   categoryStore.setState((state) => ({
     ...state,
     categoryProducts,
+  }));
+}
+
+export function updateFeaturedProducts(featuredProducts: Product[]) {
+  categoryStore.setState((state) => ({
+    ...state,
+    featuredProducts,
   }));
 }
