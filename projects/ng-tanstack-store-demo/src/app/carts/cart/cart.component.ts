@@ -26,7 +26,7 @@ import { CartFacade } from '../facades/cart.facade';
         <app-cart-total />
         <span>Promotion code: </span>
         <input [(ngModel)]="promoCode" />
-        <button (click)="updatePromoCode(promoCode())">Apply</button>
+        <button (click)="updatePromoCode()">Apply</button>
       </div>
     } @else {
       <p>Your cart is empty, please buy something.</p>
@@ -52,7 +52,7 @@ export class CartComponent {
   promoCode = signal(this.cartFacade.promoCode());
   cart = this.cartFacade.cart;
 
-  updatePromoCode(code: string) {
-    return this.cartFacade.updatePromoCode(code);
+  updatePromoCode() {
+    return this.cartFacade.updatePromoCode(this.promoCode());
   }
 }
