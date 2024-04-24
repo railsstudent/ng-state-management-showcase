@@ -19,13 +19,13 @@ function loadCategoryProducts(httpClient: HttpClient, destroyRef$: DestroyRef, f
         productService.products$,
         productService.featuredProductIds$,
       ),
-      tap(([categories, products, featuredProductIds]) => {
+      tap(([categories, products, featuredProductIds]) => 
         facade.updateCategoryInfo({
           categories,
           products,
           featuredProductIds
-        });
-      }),
+        })
+      ),
       takeUntilDestroyed(destroyRef$),
       catchError((e) => {
         facade.updateCategoryInfo({

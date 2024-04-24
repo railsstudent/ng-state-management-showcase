@@ -1,18 +1,15 @@
 import { HttpClient, provideHttpClient } from "@angular/common/http";
-import { APP_INITIALIZER, DestroyRef, inject } from "@angular/core";
+import { APP_INITIALIZER, DestroyRef } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import { provideRouter, TitleStrategy, withComponentInputBinding } from "@angular/router";
 import { catchError, combineLatestWith, EMPTY, retry, tap } from "rxjs";
 import { routes } from "./app.routes";
 import { CategoryFacade } from './category-products/facades/category.facade';
-import { CategoryStore } from "./category-products/stores/category.store";
 import { ProductService } from './products/services/product.service';
 import { ShopPageTitleStrategy } from "./shop-page-title.strategy";
 
 function loadCategoryProducts(httpClient: HttpClient, destroyRef$: DestroyRef, facade: CategoryFacade, productService: ProductService) {
-  const PRODUCTS_URL = 'https://fakestoreapi.com/products';
   const CATEGORIES_URL = 'https://fakestoreapi.com/products/categories';
-  const store = inject(CategoryStore);
 
   return () => {
     const categories$ = httpClient.get<string[]>(CATEGORIES_URL);
@@ -22,13 +19,13 @@ function loadCategoryProducts(httpClient: HttpClient, destroyRef$: DestroyRef, f
         productService.products$,
         productService.featuredProductIds$,
       ),
-      tap(([categories, products, featuredProductIds]) => {
+      tap(([categories, products, featuredProductIds]) => 
         facade.updateCategoryInfo({
           categories,
           products,
           featuredProductIds
-        });   
-      }),
+        })
+      ),
       takeUntilDestroyed(destroyRef$),
       catchError((e) => {
         facade.updateCategoryInfo({
