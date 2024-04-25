@@ -6,7 +6,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 - NgRx Signal Store Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-ngrx-signalStore-demo/
 - TanStack Store Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-tanstack-store-demo/
 - Signal Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-signal-demo/
-- RxAngular Demo: https://railsstudent.github.io/ng-state-management-showcase/ng-rx-angular-demo/
+- RxAngular Demo: https://railsstudent.github.io/ng-state-management-showcase/ngRxAngularDemo/
 
 # Run Deployment Script
 - Checktout gh-pages branch

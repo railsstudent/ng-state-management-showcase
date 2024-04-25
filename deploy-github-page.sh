@@ -9,7 +9,7 @@ if [ "$1" = "all" ]; then
     echo "delete docs"
     rm -rf docs/*
     echo "build all project starts"
-    project_names=("ng-ngrx-signalStore-demo" "ng-signal-demo" "ng-tanstack-store-demo")
+    project_names=("ng-ngrx-signalStore-demo" "ng-signal-demo" "ng-tanstack-store-demo", "ngRxAngularDemo")
     # Loop through the array elements using a for loop
     for item in "${project_names[@]}"; do
         ng build --project=$item --output-path docs/$item
