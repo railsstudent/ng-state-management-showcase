@@ -20,13 +20,13 @@ catFacade: CategoryFacade, productService: ProductService) {
         productService.products$,
         productService.featuredProductIds$,
       ),
-      tap(([categories, products, featuredProductIds]) => {
+      tap(([categories, products, featuredProductIds]) => 
         catFacade.updateCategoryInfo({
           categories,
           products,
           featuredProductIds
-        });
-      }),
+        })
+      ),
       takeUntilDestroyed(destroyRef$),
       catchError((e) => {
         catFacade.updateCategoryInfo({
@@ -56,7 +56,6 @@ export const appConfig = {
       deps: [HttpClient, DestroyRef, CategoryFacade, ProductService],
       useFactory: (httpClient: HttpClient, destroyRef: DestroyRef, catFarcade: CategoryFacade, productService: ProductService) => 
         loadCategoryProducts(httpClient, destroyRef, catFarcade, productService),
-
     }
   ]
 }

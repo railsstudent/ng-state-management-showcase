@@ -291,34 +291,34 @@
         }
       }
     },
-    "ngMiniRxStoreDemo": {
+    "ngRxAngularDemo": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
         }
       },
-      "root": "projects/ng-mini-rx-store-demo",
-      "sourceRoot": "projects/ng-mini-rx-store-demo/src",
+      "root": "projects/ng-rx-angular-demo",
+      "sourceRoot": "projects/ng-rx-angular-demo/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/ng-mini-rx-store-demo",
-            "index": "projects/ng-mini-rx-store-demo/src/index.html",
-            "browser": "projects/ng-mini-rx-store-demo/src/main.ts",
+            "outputPath": "dist/ng-rx-angular-demo",
+            "index": "projects/ng-rx-angular-demo/src/index.html",
+            "browser": "projects/ng-rx-angular-demo/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
-            "tsConfig": "projects/ng-mini-rx-store-demo/tsconfig.app.json",
+            "tsConfig": "projects/ng-rx-angular-demo/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/ng-mini-rx-store-demo/src/favicon.ico",
-              "projects/ng-mini-rx-store-demo/src/assets"
+              "projects/ng-rx-angular-demo/src/favicon.ico",
+              "projects/ng-rx-angular-demo/src/assets"
             ],
             "styles": [
-              "projects/ng-mini-rx-store-demo/src/styles.scss"
+              "projects/ng-rx-angular-demo/src/styles.scss"
             ],
             "scripts": []
           },
@@ -337,7 +337,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ng-mini-rx-store-demo/"
+              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ng-rx-angular-demo/"
             },
             "development": {
               "optimization": false,
@@ -351,10 +351,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "ngMiniRxStoreDemo:build:production"
+              "buildTarget": "ngRxAngularDemo:build:production"
             },
             "development": {
-              "buildTarget": "ngMiniRxStoreDemo:build:development"
+              "buildTarget": "ngRxAngularDemo:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -362,7 +362,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "ngMiniRxStoreDemo:build"
+            "buildTarget": "ngRxAngularDemo:build"
           }
         },
         "test": {
@@ -372,14 +372,14 @@
               "zone.js",
               "zone.js/testing"
             ],
-            "tsConfig": "projects/ng-mini-rx-store-demo/tsconfig.spec.json",
+            "tsConfig": "projects/ng-rx-angular-demo/tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/ng-mini-rx-store-demo/src/favicon.ico",
-              "projects/ng-mini-rx-store-demo/src/assets"
+              "projects/ng-rx-angular-demo/src/favicon.ico",
+              "projects/ng-rx-angular-demo/src/assets"
             ],
             "styles": [
-              "projects/ng-mini-rx-store-demo/src/styles.scss"
+              "projects/ng-rx-angular-demo/src/styles.scss"
             ],
             "scripts": []
           }
