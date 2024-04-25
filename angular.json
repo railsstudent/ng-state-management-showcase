@@ -337,7 +337,7 @@
                 }
               ],
               "outputHashing": "all",
-              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ng-rx-angular-demo/"
+              "baseHref": "https://railsstudent.github.io/ng-state-management-showcase/ngRxAngularDemo/"
             },
             "development": {
               "optimization": false,
