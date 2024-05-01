@@ -1,11 +1,11 @@
 import { HttpClient, provideHttpClient } from "@angular/common/http";
-import { provideRouter, TitleStrategy, withComponentInputBinding } from "@angular/router";
-import { routes } from "./app.routes";
-import { ShopPageTitleStrategy } from "./shop-page-title.strategy";
 import { APP_INITIALIZER, DestroyRef } from "@angular/core";
-import { ProductService } from "./products/services/product.service";
-import { CategoryFacade } from "./category-products/facades/category.facade";
+import { provideRouter, TitleStrategy, withComponentInputBinding } from "@angular/router";
 import { loadCategoryProducts } from './app.initializer';
+import { routes } from "./app.routes";
+import { CategoryFacade } from "./category-products/facades/category.facade";
+import { ProductService } from "./products/services/product.service";
+import { ShopPageTitleStrategy } from "./shop-page-title.strategy";
 
 export const appConfig = {
   providers: [
