@@ -41,7 +41,6 @@ function loadCategoryProducts(httpClient: HttpClient, destroyRef$: DestroyRef, f
   }
 }
 
-
 export const appConfig = {
   providers: [
     provideHttpClient(),
