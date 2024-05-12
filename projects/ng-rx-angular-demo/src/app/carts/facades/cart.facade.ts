@@ -1,6 +1,6 @@
 import { Injectable, Signal, inject } from "@angular/core";
-import { CartStore } from "../stores/cart.store";
 import { Product } from "../../products/interfaces/product.interface";
+import { CartStore } from "../stores/cart.store";
 import { CartItem } from "../types/cart-item.type";
 
 @Injectable({
@@ -30,14 +30,19 @@ export class CartFacade {
   }
 
   addCart(idx: number, product: Product, quantity: number) {
-    this.cartStore.buy(idx, product, quantity);
+    this.cartStore.order({
+      action: 'buy',
+      idx,
+      product,
+      quantity,
+    })
   }
 
   deleteCart(id: number) {
-    this.cartStore.remove(id);
+    this.cartStore.order({ action: 'remove', id });
   }
 
   updateCart(id: number, quantity: number) {
-    this.cartStore.update(id, quantity);
+    this.cartStore.order({ action: 'update', id, quantity });
   }
 }

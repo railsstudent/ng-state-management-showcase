@@ -1,21 +1,51 @@
-import { Injectable, Signal } from '@angular/core';
+import { Injectable, signal, Signal } from '@angular/core';
 import { rxState } from '@rx-angular/state';
-import { Product } from '../../products/interfaces/product.interface';
 import { CartStoreState } from '../states/cart-store.state';
-import { CartItem } from '../types/cart-item.type';
+import { BuyCartItem, OrderCartItem } from '../types/order-cart-item.type';
 
 const initialState: CartStoreState = {
   promoCode: '',
   cart: [],
 }
 
+function buy({ cart }: CartStoreState, { idx, product, quantity }: BuyCartItem) {
+  if (idx < 0) {
+    return [...cart, { ...product, quantity }];
+  }
+
+  cart[idx] = {
+    ...cart[idx],
+    quantity: cart[idx].quantity + quantity,
+  }
+  return cart;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartStore {
-  private state = rxState<CartStoreState>(({ set }) => {
+  private orderCartItem = signal<OrderCartItem | null>(null);
+  
+  private state = rxState<CartStoreState>(({ set, connect }) => {
     // set initial statement
     set(initialState);
+    connect('cart', this.orderCartItem, (state, value) => {
+      if (!value) {
+        return state.cart;
+      }
+
+      const isRemove = value.action === 'remove' || value.action === 'update' && value.quantity <= 0;
+      if (value.action === 'buy') {
+        return buy(state, value);
+      } else if (value.action === 'update' && value.quantity > 0) {
+        return state.cart.map((item) => 
+          item.id === value.id ? { ...item, quantity: value.quantity } : item);
+      } else if (isRemove) {
+        return state.cart.filter((item) => item.id !== value.id);
+      }
+
+      return state.cart;
+    });
   });
   
   signal: typeof this.state.signal = this.state.signal.bind(this.state);
@@ -33,15 +63,11 @@ export class CartStore {
   }) as Signal<number>;
 
   summary = this.state.computed(({ cart }) => {
-    const results = cart().reduce(({ quantity, subtotal }, item) => {
-      const newQuantity = quantity + item.quantity;
-      const newSubtotal = subtotal + item.price * item.quantity;
-
-      return { 
-        quantity: newQuantity,
-        subtotal: newSubtotal
-      }
-    }, { quantity: 0, subtotal: 0 });
+    const results = cart().reduce(({ quantity, subtotal }, item) => 
+      ({ 
+        quantity: quantity + item.quantity,
+        subtotal: subtotal + item.price * item.quantity
+      }), { quantity: 0, subtotal: 0 });
 
     const { subtotal, quantity } = results;
     const discount = subtotal * this.discountPercent();
@@ -55,45 +81,7 @@ export class CartStore {
     }
   });
 
-  buy(idx: number, product: Product, quantity: number): void {
-    let newCart: CartItem[] = [];
-    const cart = this.state.signal('cart');
-
-    if (idx >= 0) {
-      newCart = cart().map((item, i) => {
-        if (i === idx) {
-          return {
-            ...item,
-            quantity: item.quantity + quantity,
-          }
-        }
-        return item;``
-      });
-    } else {
-      newCart = [...cart(), { ...product, quantity } ];
-    }
-
-    this.state.set({ cart: newCart });
-  }
-
-  remove(id: number): void {
-    const oldCart = this.state.signal('cart');
-    const cart = oldCart().filter((item) => item.id !== id);
-    this.state.set({ cart });
-  } 
-
-  update(id: number, quantity: number): void {  
-    const oldCart = this.state.signal('cart');
-    
-    if (quantity <= 0) {
-      const cart = oldCart().filter((item) => item.id !== id);
-      this.state.set({ cart });
-    } else {
-      const cart = oldCart().map((item) => 
-        item.id === id ? { ...item, quantity} : item 
-      );
-
-      this.state.set({ cart });
-    }
+  order(item: OrderCartItem) {
+    this.orderCartItem.set(item);
   }
 }
