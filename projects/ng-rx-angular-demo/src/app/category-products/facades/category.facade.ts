@@ -1,8 +1,8 @@
 import { Injectable, inject } from "@angular/core";
-import { CategoryStore } from "../stores/category.store";
-import { Product } from "../../products/interfaces/product.interface";
 import { CategoryProducts } from "../../categories/interfaces/category-products.interface";
+import { Product } from "../../products/interfaces/product.interface";
 import { CategoryInit } from "../interfaces/category-init.interface";
+import { CategoryStore } from "../stores/category.store";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,6 @@ export class CategoryFacade {
   featuredProducts = this.store.signal('featuredProducts');
 
   updateCategoryInfo({ categories, products, featuredProductIds }: CategoryInit) {
-
     const featuredProducts: Product[] = [];
     for (const id of featuredProductIds) {
       const p = products.find((p) => p.id === id);
@@ -33,9 +32,11 @@ export class CategoryFacade {
       });
     }, [] as CategoryProducts[]);
 
-    this.store.updateCategories(categories);
-    this.store.updateProducts(products);
-    this.store.updateCategoryProducts(categoryProducts);
-    this.store.updateFeaturedProducts(featuredProducts);
+    this.store.categoryProductInfo.set({
+      categories,
+      products,
+      categoryProducts,
+      featuredProducts,
+    });
   }
 }
