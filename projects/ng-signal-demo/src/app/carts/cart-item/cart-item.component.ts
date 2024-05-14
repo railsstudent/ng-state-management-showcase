@@ -17,8 +17,8 @@ import { CartFacade } from '../facades/cart.facade';
         <input style="width: 50px;" type="number" min="1" [(ngModel)]="quantity" />
       </p>
       <p style="width: 10%">
-        <button class="btnUpdate" (click)="update(item().id, quantity())">Update</button>
-        <button (click)="delete(item().id)">X</button>
+        <button class="btnUpdate" (click)="update()">Update</button>
+        <button (click)="delete()">X</button>
       </p>
     </div>
   `,
@@ -44,11 +44,11 @@ export class CartItemComponent {
   quantity = model(0);
 
 
-  delete(id: number) {
-    return this.cartFacade.deleteCart(id);
+  delete() {
+    return this.cartFacade.deleteCart(this.item().id);
   }
 
-  update(id: number, quantity: number) {
-    return this.cartFacade.updateCart(id, quantity);
+  update() {
+    return this.cartFacade.updateCart(this.item().id, this.quantity());
   }
 }
