@@ -34,7 +34,7 @@ export class CartFacade {
   }
 
   deleteCart(id: number) {
-    this.store.remove(id);
+    this.store.update(id, 0);
   }
 
   updateCart(id: number, quantity: number) {
