@@ -1,7 +1,6 @@
-import { Injectable, Signal, inject } from "@angular/core";
-import { CartStore } from "../stores/cart.store";
+import { Injectable, inject } from "@angular/core";
 import { Product } from "../../products/interfaces/product.interface";
-import { CartItem } from "../types/cart.type";
+import { CartStore } from "../stores/cart.store";
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +8,10 @@ import { CartItem } from "../types/cart.type";
 export class CartFacade {
   private store = inject(CartStore);
 
-  get cart(): Signal<CartItem[]> {
-    return this.store.cart;
-  }
-
-  get discountPercent(): Signal<number> {
-    return this.store.discountPercent;
-  }
-
-  get summary() {
-    return this.store.summary;
-  }
-
-  get promoCode() {
-    return this.store.promoCode;
-  }
+  cart = this.store.cart;
+  discountPercent = this.store.discountPercent;
+  summary = this.store.summary;
+  promoCode = this.store.promoCode;
 
   updatePromoCode(promoCode: string) {
     this.store.updatePromoCode(promoCode);
@@ -34,7 +22,7 @@ export class CartFacade {
   }
 
   deleteCart(id: number) {
-    this.store.remove(id);
+    this.store.update(id, 0);
   }
 
   updateCart(id: number, quantity: number) {
