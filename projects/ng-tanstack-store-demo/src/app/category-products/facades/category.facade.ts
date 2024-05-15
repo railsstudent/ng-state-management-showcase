@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { injectStore } from '@tanstack/angular-store';
 import { CategoryProducts } from '../../categories/interfaces/category-products.interface';
-import { categoryStore, updateCategories, updateCategoryProducts, updateFeaturedProducts, updateProducts } from '../../category-products/stores/category.store';
+import { categoryStore, updateCategoryStoreState } from '../../category-products/stores/category.store';
 import { Product } from '../../products/interfaces/product.interface';
 import { CategoryInit } from '../interfaces/category-init.interface';
 
@@ -32,9 +32,11 @@ export class CategoryFacade {
       });
     }, [] as CategoryProducts[]);
 
-    updateCategories(categories);
-    updateProducts(products);
-    updateCategoryProducts(categoryProducts);
-    updateFeaturedProducts(featuredProducts);
+    updateCategoryStoreState({
+      categories,
+      products,
+      categoryProducts,
+      featuredProducts,
+    });
   }
 }

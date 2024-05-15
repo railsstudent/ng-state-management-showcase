@@ -32,9 +32,11 @@ export class CategoryFacade {
       });
     }, [] as CategoryProducts[]);
 
-    this.store.updateCategories(categories);
-    this.store.updateProducts(products);
-    this.store.updateCategoryProducts(categoryProducts);
-    this.store.updateFeaturedProducts(featuredProducts);
+    this.store.updateCategoryStoreState({
+      categories,
+      products,
+      categoryProducts,
+      featuredProducts,
+    });
   }
 }

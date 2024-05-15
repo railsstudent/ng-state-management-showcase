@@ -1,18 +1,37 @@
-import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
-import { CartStoreState } from '../states/cart-store.state';
 import { computed } from '@angular/core';
+import { patchState, signalStore, withComputed, withMethods, withState } from '@ngrx/signals';
 import { Product } from '../../products/interfaces/product.interface';
-import { CartItem } from '../types/cart.type';
+import { CartStoreState } from '../states/cart-store.state';
 
 const initialState: CartStoreState = {
   promoCode: '',
   cart: [],
 }
 
-function deleteFromCart(state: CartStoreState, id: number): CartItem[] {
-  const updatedCart = state.cart.filter((item) => item.id !== id);
+function updateCart({ cart }: CartStoreState,productId: number, quantity: number) {
+  if (quantity <= 0) {
+    return cart.filter((item) => item.id !== productId);
+  } 
+    
+  return cart.map((item) => 
+    item.id === productId ? { ...item, quantity} : item 
+  );
+}
 
-  return updatedCart;
+function addCart({ cart }: CartStoreState, idx: number, product: Product, quantity: number) {
+  if (idx >= 0) {
+    return cart.map((item, i) => {
+      if (i === idx) {
+        return {
+          ...item,
+          quantity: item.quantity + quantity,
+        }
+      }
+      return item;``
+    });
+  } 
+  
+  return [...cart, { ...product, quantity } ];
 }
 
 export const CartStore = signalStore(
@@ -57,48 +76,22 @@ export const CartStore = signalStore(
   }),
   withMethods((store) => ({
     updatePromoCode(promoCode: string): void {
-      patchState(store, (state) => ({ promoCode }))
+      patchState(store, { promoCode })
     },
     buy(idx: number, product: Product, quantity: number): void {
       patchState(store, (state) => {
-        let newCart: CartItem[] = [];
-        if (idx >= 0) {
-          newCart = state.cart.map((item, i) => {
-            if (i === idx) {
-              return {
-                ...item,
-                quantity: item.quantity + quantity,
-              }
-            }
-            return item;``
-          });
-        } else {
-          newCart = [...state.cart, { ...product, quantity } ];
-        }
+        const newCart = addCart(state, idx, product, quantity);
 
         return {
           cart: newCart,
         }
       })
     },
-    remove(id: number): void {
-      patchState(store, (state) => {
-        const cart = deleteFromCart(state, id);
-        return { cart };
-      });
-    },
     update(id: number, quantity: number): void {  
       patchState(store, (state) => {
-        if (quantity <= 0) {
-          const cart = deleteFromCart(state, id);
-          return { cart };
-        } else {
-          const cart = state.cart.map((item) => 
-            item.id === id ? { ...item, quantity} : item 
-          );
+        const cart = updateCart(state, id, quantity);
 
-          return { cart };
-        }
+        return { cart };
       });
     }
   }))

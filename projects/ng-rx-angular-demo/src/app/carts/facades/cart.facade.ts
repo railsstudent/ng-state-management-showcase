@@ -9,40 +9,29 @@ import { CartItem } from "../types/cart-item.type";
 export class CartFacade {
   cartStore = inject(CartStore);
 
-  get cart(): Signal<CartItem[]> {
-    return this.cartStore.signal('cart');
-  }
-
-  get discountPercent(): Signal<number> {
-    return this.cartStore.discountPercent;
-  }
-
-  get summary() {
-    return this.cartStore.summary;
-  }
-
-  get promoCode() {
-    return this.cartStore.signal('promoCode');
-  }
+  cart = this.cartStore.cart;
+  discountPercent = this.cartStore.discountPercent;
+  summary = this.cartStore.summary;
+  promoCode = this.cartStore.promoCode;
 
   updatePromoCode(promoCode: string) {
-    this.cartStore.set({ promoCode });
+    this.cartStore.promoCode.set(promoCode);
   }
 
   addCart(idx: number, product: Product, quantity: number) {
-    this.cartStore.order({
+    this.cartStore.orderCartItem.set({
       action: 'buy',
       idx,
       product,
       quantity,
-    })
+    });
   }
 
   deleteCart(id: number) {
-    this.cartStore.order({ action: 'remove', id });
+    this.cartStore.orderCartItem.set({ action: 'remove', id });
   }
 
   updateCart(id: number, quantity: number) {
-    this.cartStore.order({ action: 'update', id, quantity });
+    this.cartStore.orderCartItem.set({ action: 'update', id, quantity });
   }
 }

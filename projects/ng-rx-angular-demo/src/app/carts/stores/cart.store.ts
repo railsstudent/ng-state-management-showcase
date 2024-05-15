@@ -9,22 +9,23 @@ const initialState: CartStoreState = {
 }
 
 function buy({ cart }: CartStoreState, { idx, product, quantity }: BuyCartItem) {
-  if (idx < 0) {
-    return [...cart, { ...product, quantity }];
+  if (idx >= 0) {
+    cart[idx] = {
+      ...cart[idx],
+      quantity: cart[idx].quantity + quantity,
+    }
+    return cart;
   }
 
-  cart[idx] = {
-    ...cart[idx],
-    quantity: cart[idx].quantity + quantity,
-  }
-  return cart;
+  return [...cart, { ...product, quantity }];
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartStore {
-  private orderCartItem = signal<OrderCartItem | null>(null);
+  orderCartItem = signal<OrderCartItem | null>(null);
+  promoCode = signal<string>('');
   
   private state = rxState<CartStoreState>(({ set, connect }) => {
     // set initial statement
@@ -46,11 +47,10 @@ export class CartStore {
 
       return state.cart;
     });
+    connect('promoCode', this.promoCode)
   });
-  
-  signal: typeof this.state.signal = this.state.signal.bind(this.state);
-  
-  set: typeof this.state.set = this.state.set.bind(this.state);
+
+  cart = this.state.signal('cart');
 
   discountPercent = this.state.computed(({ promoCode }) => {
     if (promoCode() === 'DEVFESTHK2023') {  
@@ -80,8 +80,4 @@ export class CartStore {
       total: total.toFixed(2),
     }
   });
-
-  order(item: OrderCartItem) {
-    this.orderCartItem.set(item);
-  }
 }
