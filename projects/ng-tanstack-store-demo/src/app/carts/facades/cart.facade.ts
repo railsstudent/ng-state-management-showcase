@@ -49,22 +49,22 @@ export class CartFacade {
 
   addCart(idx: number, product: Product, quantity: number) {
     cartStore.setState((state) => {
-      const newCart = addCart(state, idx, product, quantity);    
+      const cart = addCart(state, idx, product, quantity);    
 
       return {
         ...state,
-        cart: newCart,
+        cart,
       }
     });
   }
 
   deleteCart(id: number) {
     cartStore.setState((state) => {
-      const updatedCart = updateCart(state, id, 0);
+      const cart = updateCart(state, id, 0);
 
       return {
         ...state,
-        cart: updatedCart,
+        cart,
       }
     });
   }
